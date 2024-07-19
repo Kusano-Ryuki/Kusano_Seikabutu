@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOTPaperグルメ検索アプリ</title>
+</head>
+<body>
+    <div class="container">
+        <h1>HOTPaperグルメ検索</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="キーワードを入力">
+            <button id="searchButton">検索</button>
+        </div>
+        <div id="results"></div>
+    </div>
+</body>
+<style>
+    /* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#searchButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+#searchButton:hover {
+    background-color: #218838;
+}
+
+#results {
+    margin-top: 20px;
+}
+
+.result-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.result-item h3 {
+    margin: 0;
+    color: #333;
+}
+
+.result-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+</style>
+<script>
+// script.js
+document.getElementById('searchButton').addEventListener('click', function() {
+    const query = document.getElementById('searchInput').value;
+    searchRestaurants(query);
+});
+
+function searchRestaurants(query) {
+    const url = 'https://webservice.recruit.co.jp/hotpepper/shop/v1';
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => displayResults(data.restaurants))
+        .catch(error => console.error('Error:', error));
+}
+
+function displayResults(restaurants) {
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.innerHTML = '';
+
+    if (!restaurants || restaurants.length === 0) {
+        resultsContainer.innerHTML = '<p>結果が見つかりませんでした。</p>';
+    } else {
+        restaurants.forEach(restaurant => {
+            const resultItem = document.createElement('div');
+            resultItem.classList.add('result-item');
+            resultItem.innerHTML = `
+                <h3>${restaurant.name}</h3>
+                <p>${restaurant.address}</p>
+                <p>${restaurant.phone}</p>
+                <p>${restaurant.description}</p>
+            `;
+            resultsContainer.appendChild(resultItem);
+        });
+    }
+}
+</script>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asia Map with D3.js</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <script>
+        const width = 960;
+        const height = 600;
+
+        const projection = d3.geoMercator()
+            .scale(150)
+            .translate([width / 2, height / 1.5]);
+
+        const path = d3.geoPath().projection(projection);
+
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const regionColors = {
+            "Oceania": "#99FF99"
+        };
+
+        const oceanianCountries = [
+            "Australia", "Fiji", "Kiribati", "Marshall Islands", "Micronesia", "Nauru", 
+            "New Zealand", "Palau", "Papua New Guinea", "Samoa", "Solomon Islands", 
+            "Tonga", "Tuvalu", "Vanuatu", "New Caledonia", "Norfolk Island", 
+            "Pitcairn Islands", "Tokelau", "Wallis and Futuna"
+        ];
+
+        function getRegion(countryName) {
+            if (oceanianCountries.includes(countryName)) return "Asia";
+            return "Other";
+        }
+
+        d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").then(function(geojson) {
+            const filteredFeatures = geojson.features.filter(d => getRegion(d.properties.name) === "Asia");
+
+            svg.selectAll("path")
+                .data(filteredFeatures)
+                .enter().append("path")
+                .attr("d", path)
+                .attr("fill", function(d) {
+                    return regionColors["Oceania"];
+                })
+                .attr("stroke", "#666666")
+                .attr("stroke-width", 0.5);
+        });
+    </script>
+</body>
+</html>
