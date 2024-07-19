@@ -1,9 +1,0 @@
-.MapComponent {
-    height: 100%;
-  }
-  
-  @media (max-width: 600px) {
-    .MapComponent {
-      height: 100vh;
-    }
-}
