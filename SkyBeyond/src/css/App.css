@@ -1,0 +1,47 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  position: relative;
+}
+
+.card-container {
+  position: relative;
+  width: 350px;
+  height: 400px;
+}
+
+.button-container {
+  width: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 9%;
+}
+.left-button{
+  border-radius: 0px 0px 0px 20px;
+}
+
+.right-button{
+  border-radius: 0px 0px 20px 0px;
+}
+
+.like-button{
+  border-radius: 0px 0px 0px 0px;
+}
+
+.left-button, .right-button, .like-button {
+  background-color: #172C2A;
+}
+
+.button-img{
+  width: 90%;
+}
