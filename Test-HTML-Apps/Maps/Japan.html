@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan Map with D3.js</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <script>
+        // 幅と高さの設定
+        const width = 2500;
+        const height = 400;
+
+        // 投影法の設定
+        const projection = d3.geoMercator()
+            .center([120,42]) // 日本の中心を調整
+            .scale(1500) // スケールを調整
+
+        // パスジェネレータの設定
+        const path = d3.geoPath().projection(projection);
+
+        // SVG要素の作成
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // 地方ごとの色設定
+        const regionColors = {
+            "北海道地方": "#FF9999",
+            "東北地方": "#FFCC99",
+            "関東地方": "#FFFF99",
+            "中部地方": "#CCFF99",
+            "近畿地方": "#99FF99",
+            "中国地方": "#99FFCC",
+            "四国地方": "#99FFFF",
+            "九州地方": "#9999FF",
+            "沖縄地方": "#CC99FF"
+        };
+
+        // 地方ごとの設定
+        const regionMapping = {
+            "北海道": "北海道地方",
+            "青森県": "東北地方",
+            "岩手県": "東北地方",
+            "宮城県": "東北地方",
+            "秋田県": "東北地方",
+            "山形県": "東北地方",
+            "福島県": "東北地方",
+            "茨城県": "関東地方",
+            "栃木県": "関東地方",
+            "群馬県": "関東地方",
+            "埼玉県": "関東地方",
+            "千葉県": "関東地方",
+            "東京都": "関東地方",
+            "神奈川県": "関東地方",
+            "新潟県": "中部地方",
+            "富山県": "中部地方",
+            "石川県": "中部地方",
+            "福井県": "中部地方",
+            "山梨県": "中部地方",
+            "長野県": "中部地方",
+            "岐阜県": "中部地方",
+            "静岡県": "中部地方",
+            "愛知県": "中部地方",
+            "三重県": "近畿地方",
+            "滋賀県": "近畿地方",
+            "京都府": "近畿地方",
+            "大阪府": "近畿地方",
+            "兵庫県": "近畿地方",
+            "奈良県": "近畿地方",
+            "和歌山県": "近畿地方",
+            "鳥取県": "中国地方",
+            "島根県": "中国地方",
+            "岡山県": "中国地方",
+            "広島県": "中国地方",
+            "山口県": "中国地方",
+            "徳島県": "四国地方",
+            "香川県": "四国地方",
+            "愛媛県": "四国地方",
+            "高知県": "四国地方",
+            "福岡県": "九州地方",
+            "佐賀県": "九州地方",
+            "長崎県": "九州地方",
+            "熊本県": "九州地方",
+            "大分県": "九州地方",
+            "宮崎県": "九州地方",
+            "鹿児島県": "九州地方",
+            "沖縄県": "沖縄地方"
+        };
+
+        // GeoJSONデータの読み込みと描画
+        d3.json("https://raw.githubusercontent.com/dataofjapan/land/master/japan.geojson").then(function(geojson) {
+            svg.selectAll("path")
+                .data(geojson.features)
+                .enter().append("path")
+                .attr("d", path)
+                .attr("fill", function(d) {
+                    // 都道府県名を取得
+                    const prefectureName = d.properties.nam_ja; // GeoJSON内の都道府県名のプロパティ名を確認
+                    // 都道府県名から地方を取得し、その地方の色を返す
+                    const region = regionMapping[prefectureName];
+                    return regionColors[region];
+                    // 地域が見つからない場合はデフォルトの色を設定
+                    return regionColors[region] || "#cccccc";
+                })
+                .attr("stroke", "#666666")
+                .attr("stroke-width", 0.5);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+@import "leaflet/dist/leaflet.css";
+
+/* Popupのカスタムスタイル */
+
+.custom-popup element.style{
+  width: 3000px;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: #fff;
+}
+
+/* カスタムマーカーのスタイル */
+.custom-div-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px; /* アイコンの幅を50%大きく */
+  height: 60px; /* アイコンの高さを50%大きく */
+  background-color: rgba(60, 60, 60, 0.6); /* 背景色 */
+  color: rgb(236, 236, 236); /* 文字色 */
+  font-size: 12px; /* フォントサイズを50%大きく */
+  line-height: 15px;
+  font-weight: bold; /* フォントの太さ */
+  border-radius: 5px; /* 角の丸み */
+  text-align: center;
+  padding: 20px 5px 20px; /* 内側の余白を50%大きく */
+  margin-left: -6px; /* カスタムマージン */
+  margin-top: -6px; /* カスタムマージン */
+}
